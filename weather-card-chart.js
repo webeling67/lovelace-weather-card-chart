@@ -102,6 +102,9 @@ class WeatherCardChart extends Polymer.Element {
   static get template() {
     return Polymer.html`
       <style>
+	    ha-card {
+          padding: 16px 0 0 0;
+        }
         ha-icon {
           color: var(--paper-item-icon-color);
         }
@@ -136,7 +139,7 @@ class WeatherCardChart extends Polymer.Element {
           margin: 10px 0px 10px 0px;
         }
         .attributes div {
-          text-align: center;
+          text-align: left;
         }
         .conditions {
           display: flex;
@@ -414,14 +417,14 @@ class WeatherCardChart extends Polymer.Element {
               fontColor: textColor,
               maxRotation: 0,
               callback: function(value, index, values) {
-                var data = new Date(value).toLocaleDateString(locale,
-                  { weekday: 'short' });
-                var time = new Date(value).toLocaleTimeString(locale,
-                  { hour: 'numeric' });
                 if (mode == 'hourly') {
+				  var time = new Date(value).toLocaleTimeString(locale,
+                  { hour: 'numeric', minute: 'numeric' });
                   return time;
                 }
-                return data;
+                var data = new Date(value).toLocaleDateString(locale,
+				  { weekday: 'short' });
+				return data;
               },
             },
           }],
@@ -437,6 +440,9 @@ class WeatherCardChart extends Polymer.Element {
             ticks: {
               display: true,
               fontColor: textColor,
+			  callback: function(value, index, values) {
+                return value + '°';
+              },
             },
             afterFit: function(scaleInstance) {
               scaleInstance.width = 28;
